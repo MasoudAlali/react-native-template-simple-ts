@@ -9,11 +9,11 @@ import {baseApiUrl} from '@/constants';
 import CacheService from './cacheService';
 import Logger, {LogKeys} from './logger';
 
-const axiosInstance = axios.create({
+const globalInstance = axios.create({
   baseURL: baseApiUrl,
 });
 
-axiosInstance.interceptors.request.use(async (request: AxiosRequestConfig) => {
+globalInstance.interceptors.request.use(async (request: AxiosRequestConfig) => {
   if (request.method === 'get') {
     const cacheKey = CacheService.getCacheKeyFromUrl(
       request.url || '',
@@ -44,7 +44,7 @@ axiosInstance.interceptors.request.use(async (request: AxiosRequestConfig) => {
   return request;
 });
 
-axiosInstance.interceptors.response.use(
+globalInstance.interceptors.response.use(
   (response: AxiosResponse) => {
     if (response.config?.shouldCache && !response?.config?.__cached) {
       const cacheKey = CacheService.getCacheKeyFromUrl(
@@ -73,4 +73,4 @@ axiosInstance.interceptors.response.use(
   },
 );
 
-export default axiosInstance;
+export default globalInstance;
