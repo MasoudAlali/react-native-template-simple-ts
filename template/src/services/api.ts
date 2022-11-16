@@ -5,7 +5,7 @@ import axios, {
   AxiosResponse,
   AxiosResponseHeaders,
 } from 'axios';
-import {apiEndpoints, baseApiUrl} from '@/constants';
+import {baseApiUrl} from '@/constants';
 import CacheService from './cacheService';
 import Logger, {LogKeys} from './logger';
 
@@ -72,67 +72,5 @@ axiosInstance.interceptors.response.use(
     throw error;
   },
 );
-
-export const fileReader: (
-  fileId?: Nullable<string>,
-  endpoint?: string,
-  params?: Nullable<object>,
-) => Promise<{
-  data: Nullable<string>;
-  status: number;
-  success: boolean;
-  errorType?: 'SINGLE' | 'MULTIPLE';
-  errorReason?: string;
-}> = async (fileId, endpoint = apiEndpoints.documents.download, params) => {
-  try {
-    const {data} = await axiosInstance.get(endpoint, {
-      responseType: 'blob',
-      params: params || {
-        fileId,
-      },
-    });
-    if (!data) {
-      return {
-        data: null,
-        status: 500,
-        success: false,
-      };
-    }
-    return {
-      data: await new Promise((resolve, reject) => {
-        const fr = new FileReader();
-        // @ts-ignore
-        fr.onloadend = ({target: {result}}) => {
-          resolve(result);
-        };
-        // @ts-ignore
-        fr.onerror = ({target: {error}}) => reject(error);
-        fr.readAsDataURL(data);
-      }),
-      status: 200,
-      success: true,
-    };
-  } catch (e) {
-    return {
-      data: null,
-      success: false,
-      status: 500,
-      errorReason: (e as Error).message,
-    };
-  }
-};
-
-const _get = axiosInstance.get;
-
-axiosInstance.get = <T = any, R = AxiosResponse<T>, D = any>(
-  url: string,
-  config?: AxiosRequestConfig<D>,
-): Promise<R> => {
-  return new Promise(resolve =>
-    requestAnimationFrame(() => {
-      resolve(_get(url, config));
-    }),
-  );
-};
 
 export default axiosInstance;

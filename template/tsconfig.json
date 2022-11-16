@@ -4,6 +4,7 @@
     "skipLibCheck": true,
     "lib": ["es2021"],
     "types": ["node", "jest", "rxjs"],
+    "typeRoots": ["src/types"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

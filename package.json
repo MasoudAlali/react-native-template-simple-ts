@@ -1,8 +1,8 @@
 {
-  "name": "react-native-simple-ts-template",
-  "version": "0.0.1",
+  "name": "react-native-template-simple-ts",
+  "version": "0.0.2",
   "description": "React Native Template with TS, Navigation, Vector Icons, Some Services, ...",
-  "repository": "git@github.com:MasoudAlali/react-native-simple-ts-template.git",
+  "repository": "git@github.com:MasoudAlali/react-native-template-simple-ts.git",
   "author": "Masoud Alali <masoud.alali.94@gmail.com>",
   "license": "MIT"
 }
